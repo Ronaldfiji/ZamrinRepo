@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             x:Class="CoffeeNext.Views.SignInPage"
+             Title="I am Sign Page"
+             Shell.FlyoutBehavior="Flyout"
+             Shell.NavBarIsVisible="True"
+             xmlns:viewmodels="clr-namespace:CoffeeNext.ViewModels"
+             xmlns:model="clr-namespace:CoffeeNext.Models"
+             
+             >
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <xct:InvertedBoolConverter x:Key="invertBoolConverter" />
+        </ResourceDictionary>
+        <Style x:Key="InvalidEntryStyle" TargetType="Entry">
+            <Setter Property="TextColor" Value="Red" />
+            <Setter Property="PlaceholderColor" Value="Red" />
+        </Style>
+    </ContentPage.Resources>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Sign Up"  Command="{Binding SignUpCommand}"/>
+    </ContentPage.ToolbarItems>
+    
+    <ContentPage.BindingContext>
+        <viewmodels:SignInViewModel />
+    </ContentPage.BindingContext>
+    
+    <ContentPage.Content>
+
+        <Grid>
+
+            <StackLayout Padding="40" VerticalOptions="Center" 
+                     HorizontalOptions="FillAndExpand">
+
+                <!--
+                <ActivityIndicator HorizontalOptions="Center" IsRunning="{Binding IsBusy}"
+                IsVisible="{Binding IsBusy}"  VerticalOptions="Center" Color="Red" Scale="4"  />
+
+                -->
+                        <Label Text="Email" FontSize="Medium" />
+                <Entry Text="{Binding LoginModel_.Email, Mode=TwoWay}" FontSize="Small" Placeholder="Enter email"  x:Name="UsernameEntry"  >
+                            <Entry.Behaviors>
+                        <xct:EmailValidationBehavior x:Name="EmailValidator" Flags="ValidateOnUnfocusing" IsValid="{Binding LoginModel_.EmailValid} " 
+                             InvalidStyle="{StaticResource InvalidEntryStyle}" DecorationFlags="Trim"/>
+                            </Entry.Behaviors>
+                        </Entry>
+                        <Label Text="Email is not valid" TextColor="Red" IsVisible="{Binding IsValid, Source={x:Reference EmailValidator}, 
+                        Converter={StaticResource invertBoolConverter}}" />
+
+                        <Label Text="Password" FontSize="Medium" />
+                <Entry x:Name="UserPassword" Text="{Binding LoginModel_.Password, Mode=TwoWay}"  FontSize="Small" Margin="0" 
+                         IsPassword="True"   Placeholder="Enter password" >
+                            <Entry.Behaviors>
+                                <xct:TextValidationBehavior x:Name="PasswordValidator"  Flags="ValidateOnUnfocusing,ForceMakeValidWhenFocused" 
+                              IsValid="{Binding LoginModel_.PasswordValid}"
+                              InvalidStyle="{StaticResource InvalidEntryStyle}" MinimumLength="2"  MaximumLength="10"/>
+
+                            </Entry.Behaviors>
+                        </Entry>
+                        <Label Text="Password is not valid" TextColor="Red" IsVisible="{Binding IsValid, Source={x:Reference PasswordValidator}, 
+                        Converter={StaticResource invertBoolConverter}}" />
+
+
+                        <Button Text="Login" Command="{Binding SignInCommand}"  Margin="0, 10, 0, 0"/>
+                        <Label Text="Register" HorizontalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+                            </Label.GestureRecognizers>
+                        </Label>                   
+               
+            </StackLayout>
+            <StackLayout IsVisible="{Binding IsBusy}" Padding="30" VerticalOptions="Center" HorizontalOptions="Center">                
+                <ActivityIndicator HorizontalOptions="Center" IsRunning="{Binding IsBusy}"
+                IsVisible="{Binding IsBusy}"  VerticalOptions="Center" Color="GreenYellow" Scale="2"  />
+                <Label Text="Loading..." HorizontalOptions="Center" TextColor="OrangeRed"/>
+            </StackLayout>
+        </Grid>
+
+
+    </ContentPage.Content>
+</ContentPage>

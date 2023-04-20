@@ -1,0 +1,229 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+             x:Class="CoffeeNext.Views.ProjectsPage"
+             Title="Bula Projects page"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"             
+             xmlns:viewmodels="clr-namespace:CoffeeNext.ViewModels"
+             xmlns:models="clr-namespace:CoffeeNext.Models"
+             x:Name="MyProjectPage"
+            xmlns:cells="clr-namespace:CoffeeNext.Cells"
+             
+             >
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <xct:InvertedBoolConverter x:Key="invertBoolConverter" />
+            <xct:ItemSelectedEventArgsConverter x:Key="ItemSelectedEventArgsConverter" />
+
+        </ResourceDictionary>
+        <Style x:Key="InvalidEntryStyle" TargetType="Entry">
+            <Setter Property="TextColor" Value="Red" />
+            <Setter Property="PlaceholderColor" Value="Red" />
+        </Style>
+    </ContentPage.Resources>
+
+    <ContentPage.BindingContext>
+        <viewmodels:ProjectsViewModel />
+    </ContentPage.BindingContext>
+
+<!--
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Clicked="ToolbarItem_Clicked" Text="Logout" />
+    </ContentPage.ToolbarItems>
+    -->
+    
+    <ContentPage.Content>
+        <StackLayout>
+
+            <!--
+            <StackLayout Margin="20,35,20,20">
+                <Button Text="Get Repository Data"
+                />
+                <CollectionView x:Name="collectionView" ItemsSource="{Binding Projects}" >
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="viewmodels:ProjectsViewModel">
+                            <StackLayout>
+                                <Label Text="{Binding projectsModel.ProjectName}"
+                               FontSize="Medium" />
+                                <Label Text="{Binding projectsModel.Description}"
+                               TextColor="Silver"
+                               FontSize="Small" />
+                                <Label Text="{Binding projectsModel.Code}"
+                               TextColor="Gray"
+                               FontSize="Caption" />
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+            -->
+      
+            
+         <!--   
+        <StackLayout>
+            <RefreshView 
+        Command="{Binding  RefreshCommand }"
+        IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+        Style="{StaticResource  BaseRefreshView}">
+
+                <CollectionView
+            BackgroundColor="Aquamarine"
+             VerticalScrollBarVisibility="Always"
+            ItemSizingStrategy="MeasureAllItems"
+            ItemsLayout="VerticalList"
+            ItemsSource="{Binding Projects}"
+                    >
+                    
+                    <CollectionView.EmptyView>
+                        <StackLayout Padding="12">
+                            <Label HorizontalOptions="Center" Text="No coffee" />
+                        </StackLayout>
+                    </CollectionView.EmptyView>
+
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <StackLayout>
+                                    <Label Text="{Binding ProjectName}"
+                               FontSize="Medium" />
+                                    <Label Text="{Binding Description}"
+                               TextColor="Blue"
+                               FontSize="Small" />
+                                    
+                                </StackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+
+
+                    </CollectionView>
+
+            </RefreshView>
+        </StackLayout>
+       
+        
+            -->
+
+          
+        <ListView
+        IsRefreshing="{Binding IsBusy, Mode=TwoWay}"
+        ItemsSource="{Binding Projects}"
+        RefreshCommand="{Binding RefreshCommand}"
+        SelectionMode="Single"
+        CachingStrategy="RecycleElement"
+        SelectedItem="{Binding SelectedProject, Mode=TwoWay}"
+        Style="{StaticResource CoffeeListView}"      
+        HasUnevenRows="True"
+        RefreshControlColor="Red"
+        SeparatorVisibility="Default"            
+            BackgroundColor="{AppThemeBinding 
+                        Dark={StaticResource WindowBackgroundColorDark}, 
+                        Light={StaticResource WindowBackgroundColor}}"
+       >
+                <!-- IsPullToRefreshEnabled="True" -->
+            
+                <ListView.ItemTemplate>
+                <DataTemplate  x:DataType="models:Projects">
+                    <ViewCell>
+
+                            <ViewCell.ContextActions>
+                                <MenuItem
+                            Command="{Binding Source={x:Reference MyProjectPage}, Path=BindingContext.DeleteCommand}"
+                            CommandParameter="{Binding .}"
+                            IsDestructive="True"
+                            Text="Delete" />
+                            </ViewCell.ContextActions>
+
+
+                            <Grid Padding="4">
+                                <Frame Style="{StaticResource CoffeeCard}">
+                                <StackLayout Orientation="Horizontal">
+
+                                      <!--  <StackLayout MinimumWidthRequest="50">
+                                    <Label
+                                        FontSize="Medium"
+                                        Text="{Binding Code}"
+                                        VerticalOptions="FillAndExpand"   LineBreakMode="CharacterWrap" />
+                                        </StackLayout>
+                                    -->
+
+                                        <FlexLayout Direction="Column" WidthRequest="60"
+            AlignItems="Center"
+            JustifyContent="SpaceEvenly">
+                                            <Label
+                                        FontSize="Medium" 
+                                        Text="{Binding Code}" 
+                                        VerticalOptions="FillAndExpand"   LineBreakMode="CharacterWrap" />
+
+                                        </FlexLayout>
+
+                                        <StackLayout VerticalOptions="Center" >
+                                        <Label
+                                        FontSize="Medium"
+                                        FontAttributes="Bold"
+                                        Text="{Binding ProjectName}"
+                                        VerticalOptions="Center" MaxLines="2" LineBreakMode="TailTruncation"/>
+                                        <Label
+                                        FontSize="Medium"
+                                        Text="{Binding Description}"
+                                        VerticalOptions="Center" MaxLines="2" LineBreakMode="TailTruncation"/>
+                                        <Label
+                                        FontSize="Small"
+                                        Text="{Binding Code}"
+                                        VerticalOptions="Center" />
+                                    </StackLayout>
+                                </StackLayout>
+                            </Frame>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            
+                <ListView.Behaviors>
+                    <xct:EventToCommandBehavior
+                Command="{Binding SelectedCommand}"
+                EventArgsConverter="{StaticResource ItemSelectedEventArgsConverter}"
+                EventName="ItemSelected" />
+                </ListView.Behaviors>
+            
+                <ListView.GroupHeaderTemplate>
+                    <DataTemplate x:DataType="{x:Null}">
+                        <ViewCell>
+                            <StackLayout Padding="20,0">
+                                <Label Style="{StaticResource LabelMedium}" Text="{Binding Key}" />
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.GroupHeaderTemplate>
+
+                <ListView.Header>
+                <StackLayout Orientation="Horizontal">
+                    <Label
+                    Margin="20"
+                    FontFamily="AC"
+                    HorizontalOptions="Center"                    
+                    Text="Coffees of the World">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+                            </Label.GestureRecognizers>
+                        </Label>
+
+                    
+                    </StackLayout>
+            </ListView.Header>
+            <ListView.Footer>
+                <StackLayout HorizontalOptions="Center" Orientation="Horizontal">
+                        <Button
+                    Command="{Binding LoadMoreCommand}"
+                    Style="{StaticResource ButtonOutline}"
+                    Text="Load More" />
+                    </StackLayout>
+            </ListView.Footer>
+        </ListView>
+        
+        
+
+        </StackLayout>
+        
+    </ContentPage.Content>
+</ContentPage>

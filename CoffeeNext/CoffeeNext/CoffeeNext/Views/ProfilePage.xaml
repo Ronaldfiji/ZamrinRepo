@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CoffeeNext.Views.ProfilePage"
+             BackgroundColor="Beige"            
+             xmlns:viewmodels="clr-namespace:CoffeeNext.ViewModels"
+             xmlns:model="clr-namespace:CoffeeNext.Models"
+            >
+             
+    <ContentPage.BindingContext>
+        <viewmodels:ProfileViewModel />
+    </ContentPage.BindingContext>
+    
+   
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="InvalidEntryStyle" TargetType="Entry">
+                <Setter Property="TextColor" Value="Red"/>
+            </Style>
+            <Style x:Key="LogOutLabel_ToolBarStyle" TargetType="{x:Type Label}">
+                <Setter Property="FontFamily" Value="{StaticResource MontserratRegular}" />
+                <Setter Property="FontSize" Value="{StaticResource MediumSize}" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="VerticalTextAlignment" Value="Center" />
+                <Setter Property="Margin" Value="0,50" />
+                <Setter Property="TextTransform" Value="None"/>
+            </Style>
+            
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.ToolbarItems >
+        <ToolbarItem Text="LogOut" Command="{Binding SignOffCommand}"  />
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Welcome to Your Profile"
+                VerticalOptions="Center" 
+                HorizontalOptions="CenterAndExpand" Style="{StaticResource LogOutLabel_ToolBarStyle}"/>
+
+            <StackLayout VerticalOptions="Center" Padding="30,10,30,50">
+                <Button Text="SignOff" Command="{Binding SignOffCommand}" TextTransform="None"></Button>
+            </StackLayout>
+
+
+            <StackLayout VerticalOptions="Center"   Margin="40,10,0,0">
+
+                <Grid VerticalOptions="Center"   x:DataType="viewmodels:ProfileViewModel">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="50" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Label Text="First Name" WidthRequest="120" />
+                    <Label Grid.Column="1" Text="{Binding Person.FirstName}" WidthRequest="120" />
+
+                    <Label Grid.Row="1" Text="Last Name" />
+                    <Label Grid.Column="1" Grid.Row="1" Text="{Binding Person.LastName}" />
+                    
+                    <Label Grid.Row="2" Text="DOB" WidthRequest="120" />
+                    <Label Grid.Column="1" Grid.Row="2" Text="{Binding Person.DOB}" />
+                    
+                    <Label Grid.Row="3" Text="Email" WidthRequest="120" />
+                    <Label Grid.Column="1" Grid.Row="3" Text="{Binding Person.Email}" />
+                </Grid>
+
+            </StackLayout>
+        </StackLayout>
+
+       
+
+    </ContentPage.Content>
+</ContentPage>

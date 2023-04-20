@@ -1,0 +1,29 @@
+﻿using CoffeeNext.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
+
+namespace CoffeeNext.Views
+{
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class LoginPageTest : ContentPage
+    {
+        public LoginPageTest()
+        {
+            InitializeComponent();
+            //BindingContext = new LoginViewModelTest();
+        }
+
+        
+
+        private void Button_Clicked(object sender, EventArgs e)
+        {
+            MyEmailName.Text = "Worked from count behind";
+        }
+    }
+}

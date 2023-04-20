@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CoffeeNext.Views.LoginPageTest"            
+              Shell.FlyoutBehavior="Disabled"
+             Shell.NavBarIsVisible="True"
+             xmlns:viewmodels="clr-namespace:CoffeeNext.ViewModels"
+             x:DataType="viewmodels:LoginViewModelTest">
+
+
+    <ContentPage.BindingContext>
+        <viewmodels:LoginViewModelTest />
+    </ContentPage.BindingContext>
+
+    
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Welcome to Xamarin.Forms!"
+                VerticalOptions="Center" 
+                HorizontalOptions="CenterAndExpand"  FontSize="20" BackgroundColor="LightGray"/>
+
+            <StackLayout Spacing="3" Padding="15">
+               
+                <StackLayout>
+                <Label Text="Email" FontSize="Medium" />
+                <Entry Text="{Binding EmailAddress, Mode=TwoWay}" FontSize="Micro" Placeholder="Enter username"  >
+                 
+                </Entry>
+
+                    <Grid RowDefinitions="*, Auto, Auto,*">
+                <Label  Text="{Binding EmailAddress}" TextColor="Red" Grid.Row="1" > 
+                    
+                </Label>
+                        <Label x:Name="MyEmailName"  TextColor="HotPink" Grid.Row="3" >
+                        </Label>
+                    </Grid>
+
+                </StackLayout>
+                <Button VerticalOptions="Center" Text="Login" Command="{Binding SetEmailAddressCommand}"
+                        />
+                <Button VerticalOptions="Center" Text="Click Me" x:Name="ButtonClick" Padding="15" Clicked="Button_Clicked"/>
+
+                <Button Text="Favourite"
+                                Command="{Binding 
+                            Source={RelativeSource
+                            AncestorType={x:Type viewmodels:LoginViewModelTest}},
+                            Path=SetEmailAddressCommand}"
+                                CommandParameter="{Binding .}" Padding="20"
+                                ></Button>
+
+            </StackLayout>
+            
+            
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

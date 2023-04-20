@@ -1,0 +1,224 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="CoffeeNext.Views.LoginPage"
+             Shell.NavBarIsVisible="True"
+             xmlns:viewmodels="clr-namespace:CoffeeNext.ViewModels"
+             xmlns:model="clr-namespace:CoffeeNext.Models"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:sys = "clr-namespace:System;assembly=mscorlib"
+             x:DataType="viewmodels:LoginViewModel"  >
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <xct:InvertedBoolConverter x:Key="invertBoolConverter" />
+        </ResourceDictionary>
+        <Style x:Key="InvalidEntryStyle" TargetType="Entry">
+            <Setter Property="TextColor" Value="Red" />
+            <Setter Property="PlaceholderColor" Value="Red" />
+        </Style>
+
+        <Style TargetType="RadioButton">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CheckedStates">
+                        <VisualState x:Name="Checked">
+                            <VisualState.Setters>
+                                <Setter Property="TextColor"
+                                        Value="Green" />
+                                <Setter Property="Opacity"
+                                        Value="1" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Unchecked">
+                            <VisualState.Setters>
+                                <Setter Property="TextColor"
+                                        Value="Black" />
+                                <Setter Property="Opacity"
+                                        Value="0.5" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
+        
+    </ContentPage.Resources>
+
+
+    <ContentPage.BindingContext>
+        <viewmodels:LoginViewModel />
+    </ContentPage.BindingContext>
+
+    
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+            <StackLayout Padding="30,10,30,0" VerticalOptions="Center">
+
+                <StackLayout Spacing="3" Padding="15">
+
+                    <Label Text="Firstname" FontSize="Medium" />
+                    <Entry Text="{Binding FirstName, Mode=TwoWay}" FontSize="Small" Placeholder="Enter firstname"  >
+                        <Entry.Behaviors>
+                            <xct:TextValidationBehavior Flags="ValidateOnUnfocusing" IsValid="{Binding FirstNameValid}" 
+                                    MinimumLength="2" MaximumLength="20"    DecorationFlags="Trim" />
+                        </Entry.Behaviors>
+                    </Entry>
+                    <Label Text="First name is invalid" TextColor="Red" IsVisible="{Binding FirstNameValid, 
+                        Converter={StaticResource invertBoolConverter}}" />
+
+                    <Label Text="Lastname" FontSize="Medium" />
+                    <Entry Text="{Binding LastName, Mode=TwoWay}" FontSize="Small" Placeholder="Enter lastname"  >
+                        <Entry.Behaviors>
+                            <xct:TextValidationBehavior Flags="ValidateOnUnfocusing" IsValid="{Binding LastNameValid}" 
+                                    MinimumLength="2" MaximumLength="20"    DecorationFlags="Trim" />
+                        </Entry.Behaviors>
+                    </Entry>
+                    <Label Text="Last name is invalid" TextColor="Red" IsVisible="{Binding LastNameValid, 
+                        Converter={StaticResource invertBoolConverter}}" />
+                    
+                    <Label Text="Phone contact" FontSize="Medium" />
+                    <Entry Text="{Binding PhoneNumber, Mode=TwoWay}" FontSize="Small" Placeholder="Enter phone number"  >
+                        <Entry.Behaviors>
+                            <xct:MultiValidationBehavior InvalidStyle="{StaticResource InvalidEntryStyle}" >
+                                
+                                <!--
+                                <xct:TextValidationBehavior Flags="ValidateOnUnfocusing"  MinimumLength="5" MaximumLength="10" DecorationFlags="Trim"
+                                       x:Name="text1"    IsValid="{Binding PhoneNumberValid}" />
+                                -->
+                                    <xct:CharactersValidationBehavior  x:Name="PhoneNumValidation" CharacterType="Digit" 
+                                                                       MinimumCharacterCount="1" MaximumCharacterCount="10"
+                                         RegexPattern="^[0-9+]{7,10}$"   Flags="ValidateOnUnfocusing" IsValid="{Binding PhoneNumberValid}"/>
+                                
+                                <!--
+                                <xct:NumericValidationBehavior x:Name="text2" IsValid="{Binding PhoneNumberValid}"  
+                                                               Flags="ValidateOnUnfocusing"/>
+                                -->
+                            </xct:MultiValidationBehavior>
+                        </Entry.Behaviors>
+                    </Entry>
+                        <Label Text="Valid phone is required" TextColor="Red" IsVisible="{Binding IsValid , Source={x:Reference PhoneNumValidation},
+                        Converter={StaticResource invertBoolConverter}}" />
+                    <!--
+                    <Label Text="Phone number is required and should be digit" TextColor="Red" IsVisible="{Binding IsValid , 
+                        Source={x:Reference text2}, Converter={StaticResource invertBoolConverter}}" />
+
+                    -->
+                    <Label Text="Email" FontSize="Medium" />
+                    <Entry Text="{Binding Username, Mode=TwoWay}" FontSize="Small" Placeholder="Enter email"  >
+                        <Entry.Behaviors>
+                            <xct:EmailValidationBehavior Flags="ValidateOnUnfocusing" IsValid="{Binding EmailValid} " 
+                                                         DecorationFlags="Trim"/>
+                        </Entry.Behaviors>
+                    </Entry>
+                    <Label Text="Email is not valid" TextColor="Red" IsVisible="{Binding EmailValid, 
+                        Converter={StaticResource invertBoolConverter}}" />
+                    
+                    
+                    
+                    <Label Text="Password" FontSize="Medium" />
+                    <Entry x:Name="UserPassword" Text="{Binding Password, Mode=TwoWay}"  FontSize="Small" Margin="0" 
+                         IsPassword="True"   Placeholder="Enter password" PlaceholderColor="LightBlue">
+                        <Entry.Behaviors>
+                            <xct:TextValidationBehavior Flags="ValidateOnUnfocusing,ForceMakeValidWhenFocused" IsValid="{Binding PasswordValid}"
+                                                MinimumLength="2"  MaximumLength="10"/>
+                            
+                        </Entry.Behaviors>                        
+                    </Entry>
+                    <Label Text="Password is not valid" TextColor="Red" IsVisible="{Binding PasswordValid, 
+                        Converter={StaticResource invertBoolConverter}}" />
+
+                        <Label Text="Re-Enter Password" FontSize="Medium" />
+                        <Editor  AutoSize="TextChanges" FontSize="Small" Margin="0" Text="{Binding ReEnterPassword}"
+                            Placeholder="Enter password again">
+                            <Editor.Behaviors>                                
+                                <xct:RequiredStringValidationBehavior Flags="ForceMakeValidWhenFocused,ValidateOnUnfocusing" RequiredString="{Binding Text, Source=
+                                    {x:Reference UserPassword }}" x:Name="ReEnterPasswordValidator" IsValid="{Binding RePasswordValid}"/>
+                            </Editor.Behaviors>                            
+                        </Editor>
+                        <Label Text="Passwords are not same" TextColor="Red" IsVisible="{Binding IsValid , 
+                            Source={x:Reference ReEnterPasswordValidator}, Converter={StaticResource invertBoolConverter}}" />
+
+
+                        <Label Text="DOB" FontSize="Medium" />
+
+                    <DatePicker x:Name="startDatePicker" Format="d MMMM yyyy"  MinimumDate="01/01/1930" MaximumDate="03/31/2025" 
+                        Date = "{x:Static sys:DateTime.Now}"     />
+
+                    <StackLayout>
+                        <Label Text="Country" FontSize="Medium" />
+                        <Picker x:Name="picker" Title="Select your Country" ItemsSource="{Binding CountryList}" 
+                                ItemDisplayBinding="{Binding Name}"  >
+
+                            <!--  <Picker.ItemsSource >
+                                <x:Array Type="{x:Type x:String}">
+                                    <x:String>Blue</x:String>
+                                    
+                                    <x:String>Green2222</x:String>
+                                </x:Array>
+                            </Picker.ItemsSource>
+                            -->
+                        </Picker>
+                    </StackLayout>
+
+                        <StackLayout RadioButtonGroup.GroupName="GenderGroupingLayout"
+                                     RadioButtonGroup.SelectedValue="{Binding SelectedGender}">
+                            <Label Text="{Binding SelectedGender, StringFormat='The Selection is {0}'}"/>
+                            <Label Text="Select your gender" FontSize="Medium"/>
+                            <RadioButton Content="Male" Value="M"></RadioButton>
+                            <RadioButton Content="Female" Value="F"></RadioButton>
+                            <RadioButton Content="Other" Value="O"></RadioButton>
+                       </StackLayout>
+
+                    <StackLayout Orientation="Horizontal" Padding="30,10,30,0">
+                        <Button Text="Cancel" Command="{Binding CancelCommand}" HorizontalOptions="FillAndExpand"></Button>
+                        <Button Text="Login" Command="{Binding LoginCommand}" HorizontalOptions="FillAndExpand"></Button>
+                    </StackLayout>
+
+                    
+                </StackLayout>
+
+
+              
+
+            </StackLayout>
+
+        <!--
+            <StackLayout Padding="30,10,30,0" VerticalOptions="Center"
+                 Spacing="10"
+                  HorizontalOptions="CenterAndExpand">
+                <Label Text="Text color will change accordingly to the style that is configured when a invalid value (email address) is entered." />
+                 <StackLayout Spacing="3">
+                    <Label Text="Email:" FontSize="Medium" />
+                    <Entry Text="{Binding EmailAddressTest, Mode=TwoWay}" FontSize="Micro" Placeholder="Email">
+                        <Entry.Behaviors>
+                            <xct:EmailValidationBehavior x:Name="EmailValidator"
+                                                         Flags="ValidateOnUnfocusing,ForceMakeValidWhenFocused" 
+                            DecorationFlags="Trim" InvalidStyle="{StaticResource InvalidEntryStyle}"
+                                         IsValid="{Binding EmailAddress_Test_Valid} "               />
+                        </Entry.Behaviors>
+                    </Entry>
+                    <Label Text="Invalid email address." TextColor="Red"
+                            IsVisible="{Binding IsNotValid, Source={x:Reference EmailValidator}}"/>
+
+                   
+                     
+
+                    <StackLayout Orientation="Horizontal" Padding="30,0,30,0">
+                        <Button Text="Cancel" Command="{Binding CancelCommand}" HorizontalOptions="FillAndExpand"></Button>
+                        <Button Text="Login" Command="{Binding LoginCommand_Test}" HorizontalOptions="FillAndExpand"></Button>
+                    </StackLayout>
+
+                </StackLayout>
+            </StackLayout>
+
+        -->
+            
+        </StackLayout>
+            </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

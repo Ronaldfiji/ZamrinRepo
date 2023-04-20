@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CoffeeNext.Cells.FlyoutHeader"
+             xmlns:viewmodels="clr-namespace:CoffeeNext.ViewModels"
+             x:Name="FlyoutHeaderView"
+             xmlns:sys = "clr-namespace:System;assembly=mscorlib">
+
+
+   
+
+    <ContentView.Content>
+        <StackLayout BackgroundColor="White" >
+            <!--Header-->
+
+            <StackLayout Orientation="Horizontal" BackgroundColor="LightGray" Padding="20"  >
+                <!--
+                    <Label Text="Register" TextColor="Black" VerticalOptions="CenterAndExpand" HorizontalOptions="StartAndExpand" VerticalTextAlignment="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SignInCommand }" Tapped="TapGestureRecognizer_Tapped"/>
+                        </Label.GestureRecognizers>
+                    </Label> -->
+                <Label Text="ssss"/>
+                
+                <Label   Text="SignOff" TextColor="Black" VerticalOptions="CenterAndExpand"
+                         HorizontalOptions="EndAndExpand" VerticalTextAlignment="Center" >
+                    <Label.GestureRecognizers>
+                        <!-- IsVisible="{Binding IsUserLoggedIn}"-->
+                        <TapGestureRecognizer  Tapped="TapGestureRecognizer_Tapped"/> 
+                       
+                    </Label.GestureRecognizers>
+                    
+                </Label>
+            </StackLayout>
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>
